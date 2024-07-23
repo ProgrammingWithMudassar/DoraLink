@@ -1,46 +1,41 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, InputBase, Box, Button, Menu, MenuItem } from '@mui/material';
+import { Typography, InputBase, Box, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import './style.css'
 
 const Navbar = () => {
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [selectedMenu, setSelectedMenu] = useState(null);
+    const [hoveredMenu, setHoveredMenu] = useState(null);
 
-    const handleMenuOpen = (event, menu) => {
-        setAnchorEl(event.currentTarget);
-        setSelectedMenu(menu);
+    const handleMenuMouseEnter = (menu) => {
+        setHoveredMenu(menu);
     };
 
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-        setSelectedMenu(null);
+    const handleMenuMouseLeave = () => {
+        setHoveredMenu(null);
     };
 
-    const renderMenu = (menu) => (
-        <Menu
-            anchorEl={anchorEl}
-            open={selectedMenu === menu}
-            onClose={handleMenuClose}
-            MenuListProps={{ onMouseLeave: handleMenuClose, sx: { overflow: 'visible' } }}
-            PaperProps={{
-                sx: {
-                    overflow: 'visible',
-                    mt: 1,
-                    '& .MuiMenuItem-root': {
-                        whiteSpace: 'nowrap'
-                    }
-                }
+    const renderDropdown = (menu) => (
+        <div
+            className="dropdown-content"
+            style={{
+                display: hoveredMenu === menu ? 'block' : 'none',
+                position: 'absolute',
+                backgroundColor: '#fff',
+                minWidth: '160px',
+                boxShadow: '0px 8px 16px 0px rgba(0,0,0,0.2)',
+                zIndex: 1,
+                borderRadius: '6px'
             }}
         >
-            <MenuItem onClick={handleMenuClose}>מחלקה 1</MenuItem>
-            <MenuItem onClick={handleMenuClose}>מחלקה 2</MenuItem>
-            <MenuItem onClick={handleMenuClose}>מחלקה 3</MenuItem>
-            <MenuItem onClick={handleMenuClose}>מחלקה 4</MenuItem>
-        </Menu>
+            <a href="#section1" className="dropdown-item">מחלקה 1</a>
+            <a href="#section2" className="dropdown-item">מחלקה 2</a>
+            <a href="#section3" className="dropdown-item">מחלקה 3</a>
+            <a href="#section4" className="dropdown-item">מחלקה 4</a>
+        </div>
     );
 
     return (
-        <Box position="static" sx={{ backgroundColor: '#046b64', width:"100%", display:'flex', justifyContent:'space-between', alignItems:'center', p:1, px:6 }}>
+        <Box position="static" sx={{ backgroundColor: '#005050', width: "100%", display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 1, px: 6 }}>
             <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
                 <img src="Logo.png" alt="Logo" />
             </Typography>
@@ -51,16 +46,16 @@ const Navbar = () => {
                     backgroundColor: '#fff',
                     borderRadius: '8px',
                     width: '350px',
-                    height:"35px",
-                    p: 1, mr:3,
+                    height: "35px",
+                    p: 1, mr: 3,
                     boxShadow: 1,
                 }}
             >
                 <SearchIcon sx={{ color: '#73738C', mr: 1 }} />
-                <InputBase 
-                    placeholder="חפש איש קשר" 
-                    sx={{ 
-                        color: '#000', 
+                <InputBase
+                    placeholder="חפש איש קשר"
+                    sx={{
+                        color: '#000',
                         flexGrow: 1,
                         '& .MuiInputBase-input': {
                             padding: '8px 0',
@@ -68,20 +63,36 @@ const Navbar = () => {
                     }}
                     inputProps={{ 'aria-label': 'search' }}
                 />
-                
             </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: "center" }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: "center", position: 'relative' }}>
                 <Button variant="contained" sx={{ backgroundColor: '#ffcc00', color: '#005050', mr: 2 }}> דִיוּוּחַ</Button>
-                <ul style={{ display: 'flex', justifyContent: 'center', alignItems: "center", gap: 18, listStyle: 'none', padding: 0 }}>
+                <ul style={{ display: 'flex', justifyContent: 'center', alignItems: "center", gap: 18, listStyle: 'none', padding: 0, position: 'relative' }}>
                     <li style={{ color: '#ffffff', marginRight: 2 }}>עמוד הבית</li>
-                    <li style={{ color: '#ffffff', marginRight: 2 }} onMouseEnter={(e) => handleMenuOpen(e, 'option1')}>אופציה 1</li>
-                    <li style={{ color: '#ffffff', marginRight: 2 }} onMouseEnter={(e) => handleMenuOpen(e, 'option2')}>אופציה 2</li>
-                    <li style={{ color: '#ffffff', marginRight: 2 }} onMouseEnter={(e) => handleMenuOpen(e, 'option3')}>אופציה 3</li>
+                    <li
+                        style={{ color: '#ffffff', marginRight: 2, position: 'relative', cursor:'pointer' }}
+                        onMouseEnter={() => handleMenuMouseEnter('option1')}
+                        onMouseLeave={handleMenuMouseLeave}
+                    >
+                        אופציה 1
+                        {renderDropdown('option1')}
+                    </li>
+                    <li
+                        style={{ color: '#ffffff', marginRight: 2, position: 'relative', cursor:'pointer' }}
+                        onMouseEnter={() => handleMenuMouseEnter('option2')}
+                        onMouseLeave={handleMenuMouseLeave}
+                    >
+                        אופציה 2
+                        {renderDropdown('option2')}
+                    </li>
+                    <li
+                        style={{ color: '#ffffff', marginRight: 2, position: 'relative', cursor:'pointer' }}
+                        onMouseEnter={() => handleMenuMouseEnter('option3')}
+                        onMouseLeave={handleMenuMouseLeave}
+                    >
+                        אופציה 3
+                    </li>
                 </ul>
             </Box>
-            {renderMenu('option1')}
-            {renderMenu('option2')}
-            {renderMenu('option3')}
         </Box>
     );
 };

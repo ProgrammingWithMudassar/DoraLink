@@ -1,3 +1,10 @@
-.navbar-input{
-    
+.dropdown-item {
+    padding: 8px 16px;
+    display: block;
+    color: #000;
+    text-decoration: none;
+}
+
+.dropdown-item:hover {
+    background-color: lightgray;
 }
